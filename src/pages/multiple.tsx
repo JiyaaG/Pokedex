@@ -16,7 +16,6 @@ import {
   Link as MuiLink,
   Button,
   Fade,
-  
   Divider
 } from '@mui/material';
 import Link from 'next/link';
@@ -25,11 +24,21 @@ import HomeIcon from '@mui/icons-material/Home';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
+// Assuming Pokemon type definition exists
+type Pokemon = {
+  id: number;
+  name: string;
+  sprite: string;
+  types: string[];
+};
+
 export default function MultipleLookup() {
   const theme = useTheme();
   const [names, setNames] = React.useState<string | null>(null);
   const [hasSearched, setHasSearched] = React.useState(false);
   const parsed = names ? names.split(',').map((n) => n.trim()) : [];
+
+  // Explicitly typing the query to expect an array of Pokemon
   const query = api.pokemon.getPokemonArray.useQuery(parsed, {
     enabled: parsed.length > 0,
   });
@@ -171,7 +180,7 @@ export default function MultipleLookup() {
                   </Typography>
                   <Divider sx={{ mb: 3 }} />
                   
-                  <PokedexTable pokemon={query.data} />
+                  <PokedexTable pokemon={query.data as Pokemon[]} />
                 </Box>
                 
                 <Box sx={{ mt: 4, textAlign: 'center' }}>

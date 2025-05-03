@@ -130,7 +130,16 @@ export default function IndividualLookup() {
           {!query.isLoading && query.data && (
             <Fade in={true} timeout={800}>
               <Box>
-                <PokemonRow pokemon={query.data} />
+                {query.data && (
+                  <PokemonRow 
+                    pokemon={{
+                      id: query.data.id ?? 0,
+                      name: query.data.name ?? 'Unknown',
+                      sprite: query.data.sprite ?? '',
+                      types: query.data.types ?? [],
+                    }} 
+                  />
+                )}
                 
                 <Box sx={{ mt: 4, textAlign: 'center' }}>
                   <Typography variant="body2" color="text.secondary" gutterBottom>
