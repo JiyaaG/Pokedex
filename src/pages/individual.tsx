@@ -28,6 +28,7 @@ export default function IndividualLookup() {
   const [hasSearched, setHasSearched] = React.useState(false);
   const query = api.pokemon.getPokemon.useQuery(name ?? '', {
     enabled: !!name,
+    retry: false, // Don't retry failed queries
   });
 
   const handleSearch = (value: string) => {
@@ -130,16 +131,14 @@ export default function IndividualLookup() {
           {!query.isLoading && query.data && (
             <Fade in={true} timeout={800}>
               <Box>
-                {query.data && (
-                  <PokemonRow 
-                    pokemon={{
-                      id: query.data.id ?? 0,
-                      name: query.data.name ?? 'Unknown',
-                      sprite: query.data.sprite ?? '',
-                      types: query.data.types ?? [],
-                    }} 
-                  />
-                )}
+                <PokemonRow 
+                  pokemon={{
+                    id: query.data.id ?? 0,
+                    name: query.data.name ?? 'Unknown',
+                    sprite: query.data.sprite ?? '',
+                    types: query.data.types ?? [],
+                  }} 
+                />
                 
                 <Box sx={{ mt: 4, textAlign: 'center' }}>
                   <Typography variant="body2" color="text.secondary" gutterBottom>
@@ -173,9 +172,9 @@ export default function IndividualLookup() {
             </Fade>
           )}
 
-          {hasSearched && !query.isLoading && query.data === null && (
+          {hasSearched && !query.isLoading && (query.error || !query.data) && (
             <Alert 
-              severity="info" 
+              severity="error"
               variant="filled"
               sx={{ 
                 borderRadius: 2,
