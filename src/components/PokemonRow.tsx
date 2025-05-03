@@ -1,4 +1,13 @@
-import { Card, CardContent, Typography, Avatar, Stack } from "@mui/material";
+import React from 'react';
+import { 
+  Card, 
+  CardContent, 
+  Typography, 
+  Avatar, 
+  Stack, 
+  Box, 
+  Chip 
+} from "@mui/material";
 
 type Props = {
   id: number;
@@ -7,18 +16,119 @@ type Props = {
   sprite: string;
 };
 
+// Type to color mapping
+const typeColors: Record<string, string> = {
+  normal: '#A8A77A',
+  fire: '#EE8130',
+  water: '#6390F0',
+  electric: '#F7D02C',
+  grass: '#7AC74C',
+  ice: '#96D9D6',
+  fighting: '#C22E28',
+  poison: '#A33EA1',
+  ground: '#E2BF65',
+  flying: '#A98FF3',
+  psychic: '#F95587',
+  bug: '#A6B91A',
+  rock: '#B6A136',
+  ghost: '#735797',
+  dragon: '#6F35FC',
+  dark: '#705746',
+  steel: '#B7B7CE',
+  fairy: '#D685AD',
+  // Fallback
+  default: '#777777'
+};
+
 export default function PokemonRow({ id, name, types, sprite }: Props) {
+  // Get primary type for styling
+  const primaryType = types[0]?.toLowerCase() || 'default';
+  const primaryColor = typeColors[primaryType] || typeColors.default;
+  
   return (
-    <Card sx={{ mb: 2 }}>
-      <CardContent>
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <Avatar src={sprite} alt={name} sx={{ width: 56, height: 56 }} />
-          <div>
-            <Typography variant="h6">
-              #{id} - {name}
+    <Card 
+      sx={{ 
+        mb: 2.5,
+        borderRadius: 3,
+        overflow: 'hidden',
+        position: 'relative',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        '&:hover': {
+          transform: 'translateX(5px)',
+          boxShadow: `0 5px 15px rgba(0,0,0,0.1), 0 0 0 1px ${primaryColor}`,
+        },
+      }}
+    >
+      <Box 
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '5px',
+          height: '100%',
+          backgroundColor: primaryColor,
+        }}
+      />
+      
+      <CardContent sx={{ pl: 3 }}>
+        <Stack direction="row" alignItems="center" spacing={3}>
+          <Avatar 
+            src={sprite} 
+            alt={name} 
+            sx={{ 
+              width: 70, 
+              height: 70,
+              border: `2px solid ${primaryColor}`,
+              backgroundColor: `${primaryColor}22`,
+              boxShadow: '0 3px 8px rgba(0,0,0,0.1)',
+            }} 
+          />
+          
+          <Box>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Box 
+                component="span" 
+                sx={{ 
+                  color: 'text.secondary',
+                  fontSize: '0.9em',
+                  fontWeight: 'medium',
+                  mr: 1 
+                }}
+              >
+                #{id.toString().padStart(3, '0')}
+              </Box>
+              {name}
             </Typography>
-            <Typography color="text.secondary">{types.join(", ")}</Typography>
-          </div>
+            
+            <Box mt={1}>
+              {types.map((type) => {
+                const typeColor = typeColors[type.toLowerCase()] || typeColors.default;
+                return (
+                  <Chip
+                    key={type}
+                    label={type}
+                    size="small"
+                    sx={{
+                      mr: 1,
+                      textTransform: 'capitalize',
+                      backgroundColor: `${typeColor}22`,
+                      color: typeColor,
+                      border: `1px solid ${typeColor}`,
+                      fontWeight: 'medium',
+                    }}
+                  />
+                );
+              })}
+            </Box>
+          </Box>
         </Stack>
       </CardContent>
     </Card>
