@@ -29,6 +29,6 @@ Filter Pokémon by type
 Use <PokemonTypeSelection /> and <FilterablePokedexTable />
 
 🔗 Links
-Live Demo: your-vercel-url
+Live Demo: https://pokedex-alpha-rust.vercel.app/
 
-GitHub: github.com/your-username/pokemon-pokedex
+GitHub: https://github.com/JiyaaG/Pokedex.git
