@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES2020",                     // Modern JS version
-    "lib": ["dom", "dom.iterable", "esnext"], // Include appropriate libraries
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": true,                           // No need to emit JavaScript
-    "esModuleInterop": true,                  // Ensures compatibility with CommonJS
-    "module": "ESNext",                       // Support for ES Modules
-    "moduleResolution": "node",               // Node.js module resolution
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",                        // For React JSX files (if used)
+    "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",                          // ✅ ADD THIS LINE
     "paths": {
       "@/*": ["./src/*"]
     }
@@ -20,8 +21,10 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "prisma/seed.ts"  ],
+    "**/*.tsx",
+    "prisma/seed.ts",
+    "src/pages/api/trpc/[trpc].ts"
+  ],
   "exclude": [
     "node_modules"
   ]
