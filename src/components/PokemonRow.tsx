@@ -9,14 +9,17 @@ import {
   Chip 
 } from "@mui/material";
 
-type Props = {
+export type Pokemon = {
   id: number;
   name: string;
-  types: string[];
   sprite: string;
+  types: string[];
 };
 
-// Type to color mapping
+type Props = {
+  pokemon: Pokemon;
+};
+
 const typeColors: Record<string, string> = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -36,13 +39,11 @@ const typeColors: Record<string, string> = {
   dark: '#705746',
   steel: '#B7B7CE',
   fairy: '#D685AD',
-  // Fallback
   default: '#777777'
 };
 
-export default function PokemonRow({ id, name, types, sprite }: Props) {
-  // Get primary type for styling
-  const primaryType = types[0]?.toLowerCase() || 'default';
+export default function PokemonRow({ pokemon }: Props) {
+  const primaryType = pokemon.types[0]?.toLowerCase() || 'default';
   const primaryColor = typeColors[primaryType] || typeColors.default;
   
   return (
@@ -52,11 +53,11 @@ export default function PokemonRow({ id, name, types, sprite }: Props) {
         borderRadius: 3,
         overflow: 'hidden',
         position: 'relative',
-        transition: 'transform 0.2s, box-shadow 0.2s',
+        transition: 'transform 0.2s',
         '&:hover': {
           transform: 'translateX(5px)',
-          boxShadow: `0 5px 15px rgba(0,0,0,0.1), 0 0 0 1px ${primaryColor}`,
         },
+        boxShadow: 'none', 
       }}
     >
       <Box 
@@ -73,62 +74,63 @@ export default function PokemonRow({ id, name, types, sprite }: Props) {
       <CardContent sx={{ pl: 3 }}>
         <Stack direction="row" alignItems="center" spacing={3}>
           <Avatar 
-            src={sprite} 
-            alt={name} 
+            src={pokemon.sprite} 
+            alt={pokemon.name} 
+            variant="square"
             sx={{ 
-              width: 70, 
-              height: 70,
+              width: 120,  
+              height: 120, 
               border: `2px solid ${primaryColor}`,
               backgroundColor: `${primaryColor}22`,
-              boxShadow: '0 3px 8px rgba(0,0,0,0.1)',
+              boxShadow: 'none', 
             }} 
           />
           
           <Box>
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                textTransform: 'capitalize',
-                fontWeight: 'bold',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Box 
-                component="span" 
-                sx={{ 
-                  color: 'text.secondary',
-                  fontSize: '0.9em',
-                  fontWeight: 'medium',
-                  mr: 1 
-                }}
-              >
-                #{id.toString().padStart(3, '0')}
-              </Box>
-              {name}
-            </Typography>
-            
-            <Box mt={1}>
-              {types.map((type) => {
-                const typeColor = typeColors[type.toLowerCase()] || typeColors.default;
-                return (
-                  <Chip
-                    key={type}
-                    label={type}
-                    size="small"
-                    sx={{
-                      mr: 1,
-                      textTransform: 'capitalize',
-                      backgroundColor: `${typeColor}22`,
-                      color: typeColor,
-                      border: `1px solid ${typeColor}`,
-                      fontWeight: 'medium',
-                    }}
-                  />
-                );
-              })}
-            </Box>
-          </Box>
+  <Typography 
+    variant="h6" 
+    sx={{ 
+      textTransform: 'capitalize',
+      fontWeight: 'bold',
+    }}
+  >
+    {pokemon.name}
+  </Typography>
+
+  <Typography 
+    variant="body2" 
+    color="text.secondary" 
+    sx={{ 
+      fontSize: '0.85rem',
+      fontWeight: 500,
+      mt: 0.5,
+    }}
+  >
+    #{pokemon.id.toString().padStart(3, '0')}
+  </Typography>
+
+  <Box mt={1}>
+    {pokemon.types.map((type) => {
+      const typeColor = typeColors[type.toLowerCase()] || typeColors.default;
+      return (
+        <Chip
+          key={type}
+          label={type}
+          size="small"
+          sx={{
+            mr: 1,
+            textTransform: 'capitalize',
+            backgroundColor: `${typeColor}22`,
+            color: typeColor,
+            border: `1px solid ${typeColor}`,
+            fontWeight: 'medium',
+          }}
+        />
+      );
+    })}
+  </Box>
+</Box>
+
         </Stack>
       </CardContent>
     </Card>

@@ -4,7 +4,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ClearIcon from '@mui/icons-material/Clear';
 
 type Props = {
-  options: string[];                  // e.g. ['grass','fire','water']
+  options: string[];                 
   selectedType: string | undefined;
   onSelect: (type: string | undefined) => void;
 };
@@ -72,7 +72,7 @@ export function TypeSelector({ options, selectedType, onSelect }: Props) {
                 '&:hover': {
                   backgroundColor: isSelected 
                     ? typeColor 
-                    : `${typeColor}33`, // 20% opacity
+                    : `${typeColor}33`, 
                   transform: 'translateY(-2px)',
                   boxShadow: isSelected 
                     ? `0 4px 8px ${typeColor}80` 

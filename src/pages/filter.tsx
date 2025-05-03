@@ -1,7 +1,7 @@
 import React from 'react';
 import { api } from '../utils/trpc';
 import { TypeSelector } from '../components/TypeSelector';
-import { PokemonCard } from '../components/PokemonCard';
+// import FilterablePokedexTable from '../components/filterablePokedexTable'; 
 import {
   Container,
   Typography,
@@ -14,10 +14,8 @@ import {
   Breadcrumbs,
   Link as MuiLink,
   Grid,
-  Collapse,
   Pagination,
   Fade,
-//   Chip,
   Divider
 } from '@mui/material';
 import Link from 'next/link';
@@ -26,6 +24,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import PokedexTable from '../components/PokedexTable'; 
 
 // Type color mapping
 const typeColors: Record<string, string> = {
@@ -279,12 +278,13 @@ export default function TypeFilter() {
                 <Grid container spacing={3}>
                   {currentPageData.map((pokemon, index) => (
                     <Grid item xs={12} sm={6} key={pokemon.id}>
-                      <Collapse 
-                        in={true} 
-                        timeout={300 + (index * 100)}
-                      >
-                        <PokemonCard pokemon={pokemon} />
-                      </Collapse>
+                      <Box sx={{ 
+                        opacity: 1,
+                        animation: 'fadeIn 0.3s ease-in-out',
+                        animationDelay: `${index * 100}ms`,
+                      }}>
+                        <PokedexTable pokemon={[pokemon]} />
+                      </Box>
                     </Grid>
                   ))}
                 </Grid>
@@ -312,136 +312,7 @@ export default function TypeFilter() {
             </Fade>
           )}
         </Box>
-
-        {/* Type Info Section */}
-        {/* {type && (
-          <Paper
-            elevation={0}
-            sx={{
-              mt: 5,
-              p: 3,
-              borderRadius: 3,
-              border: `1px solid ${alpha(typeColor, 0.3)}`,
-            }}
-          >
-            <Typography variant="h6" sx={{ mb: 2, color: typeColor, textTransform: 'capitalize' }}>
-              About {type} Type
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              {getTypeDescription(type)}
-            </Typography>
-            
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                Type Effectiveness:
-              </Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                {getTypeEffectiveness(type).map((item, index) => (
-                  <Chip 
-                    key={index}
-                    label={`${item.type}: ${item.effectiveness}`}
-                    size="small"
-                    sx={{
-                      backgroundColor: alpha(typeColors[item.type.toLowerCase()] || typeColors.default, 0.1),
-                      border: `1px solid ${alpha(typeColors[item.type.toLowerCase()] || typeColors.default, 0.3)}`,
-                      '& .MuiChip-label': {
-                        color: 'text.primary',
-                      }
-                    }}
-                  />
-                ))}
-              </Box>
-            </Box>
-          </Paper>
-        )} */}
       </Container>
     </>
   );
 }
-
-// Helper function to get type descriptions
-// function getTypeDescription(type: string): string {
-//   const descriptions: Record<string, string> = {
-//     grass: "Grass-type Pokémon are often plant-like creatures that use photosynthesis and have control over plants and nature. They're typically found in forests, plains, and tropical areas.",
-//     fire: "Fire-type Pokémon have mastery over flames and heat. They tend to be aggressive and powerful with blazing special attacks.",
-//     water: "Water-type Pokémon are adapted to life in the water, often with the ability to breathe underwater. They're usually peaceful but can be powerful when threatened.",
-//     electric: "Electric-type Pokémon can generate and store electricity in their bodies. They're known for their high speed and powerful electrical attacks.",
-//     psychic: "Psychic-type Pokémon possess extraordinary mental powers including telekinesis, telepathy, and precognition.",
-//     fighting: "Fighting-type Pokémon are physically strong and skilled in martial arts. They have a strong sense of justice and train rigorously.",
-//     rock: "Rock-type Pokémon have bodies made of rock or stone-like materials. They're typically tough and resistant to normal attacks.",
-//     ground: "Ground-type Pokémon are connected to the earth and often live in caves, mountains, or deserts. They're immune to Electric-type moves.",
-//     flying: "Flying-type Pokémon can fly freely in the sky. They're often bird-like or have wings and are immune to Ground-type moves.",
-//     bug: "Bug-type Pokémon resemble insects and arachnids. They often evolve quickly and at lower levels than other types.",
-//     default: "This Pokémon type has unique characteristics and abilities that make it special in battle and in the Pokémon world."
-//   };
-  
-//   return descriptions[type.toLowerCase()] || descriptions.default;
-// }
-
-// Helper function to get type effectiveness information
-// function getTypeEffectiveness(type: string): Array<{type: string, effectiveness: string}> {
-//   const effectiveness: Record<string, Array<{type: string, effectiveness: string}>> = {
-//     grass: [
-//       {type: "Fire", effectiveness: "Weak to"},
-//       {type: "Water", effectiveness: "Strong against"},
-//       {type: "Electric", effectiveness: "Resists"},
-//       {type: "Ground", effectiveness: "Strong against"}
-//     ],
-//     fire: [
-//       {type: "Water", effectiveness: "Weak to"},
-//       {type: "Grass", effectiveness: "Strong against"},
-//       {type: "Ice", effectiveness: "Strong against"},
-//       {type: "Bug", effectiveness: "Strong against"}
-//     ],
-//     water: [
-//       {type: "Electric", effectiveness: "Weak to"},
-//       {type: "Grass", effectiveness: "Weak to"},
-//       {type: "Fire", effectiveness: "Strong against"},
-//       {type: "Ground", effectiveness: "Strong against"}
-//     ],
-//     electric: [
-//       {type: "Ground", effectiveness: "Weak to"},
-//       {type: "Water", effectiveness: "Strong against"},
-//       {type: "Flying", effectiveness: "Strong against"},
-//       {type: "Electric", effectiveness: "Resists"}
-//     ],
-//     psychic: [
-//       {type: "Bug", effectiveness: "Weak to"},
-//       {type: "Dark", effectiveness: "Weak to"},
-//       {type: "Ghost", effectiveness: "Weak to"},
-//       {type: "Fighting", effectiveness: "Strong against"}
-//     ],
-//     fighting: [
-//       {type: "Flying", effectiveness: "Weak to"},
-//       {type: "Psychic", effectiveness: "Weak to"},
-//       {type: "Rock", effectiveness: "Strong against"},
-//       {type: "Normal", effectiveness: "Strong against"}
-//     ],
-//     rock: [
-//       {type: "Water", effectiveness: "Weak to"},
-//       {type: "Grass", effectiveness: "Weak to"},
-//       {type: "Fighting", effectiveness: "Weak to"},
-//       {type: "Fire", effectiveness: "Strong against"}
-//     ],
-//     ground: [
-//       {type: "Water", effectiveness: "Weak to"},
-//       {type: "Grass", effectiveness: "Weak to"},
-//       {type: "Ice", effectiveness: "Weak to"},
-//       {type: "Electric", effectiveness: "Immune to"}
-//     ],
-//     flying: [
-//       {type: "Electric", effectiveness: "Weak to"},
-//       {type: "Ice", effectiveness: "Weak to"},
-//       {type: "Rock", effectiveness: "Weak to"},
-//       {type: "Ground", effectiveness: "Immune to"}
-//     ],
-//     bug: [
-//       {type: "Fire", effectiveness: "Weak to"},
-//       {type: "Flying", effectiveness: "Weak to"},
-//       {type: "Rock", effectiveness: "Weak to"},
-//       {type: "Grass", effectiveness: "Strong against"}
-//     ]
-//   };
-  
-//   return effectiveness[type.toLowerCase()] || [];
-// }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { api } from '../utils/trpc';
 import { SearchForm } from '../components/SearchForm';
-import { PokemonCard } from '../components/PokemonCard';
+import PokedexTable from '../components/PokedexTable'; 
 import {
   Container,
   Typography,
@@ -16,7 +16,7 @@ import {
   Link as MuiLink,
   Button,
   Fade,
-  Collapse,
+  
   Divider
 } from '@mui/material';
 import Link from 'next/link';
@@ -171,15 +171,7 @@ export default function MultipleLookup() {
                   </Typography>
                   <Divider sx={{ mb: 3 }} />
                   
-                  {query.data.map((pokemon, index) => (
-                    <Collapse 
-                      key={pokemon.id} 
-                      in={true} 
-                      timeout={500 + (index * 200)}
-                    >
-                      <PokemonCard pokemon={pokemon} />
-                    </Collapse>
-                  ))}
+                  <PokedexTable pokemon={query.data} />
                 </Box>
                 
                 <Box sx={{ mt: 4, textAlign: 'center' }}>

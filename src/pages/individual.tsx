@@ -1,7 +1,7 @@
 import React from 'react';
 import { api } from '../utils/trpc';
 import { SearchForm } from '../components/SearchForm';
-import { PokemonCard } from '../components/PokemonCard';
+import  PokemonRow  from '../components/PokemonRow';
 import {
   Container,
   Typography,
@@ -130,7 +130,7 @@ export default function IndividualLookup() {
           {!query.isLoading && query.data && (
             <Fade in={true} timeout={800}>
               <Box>
-                <PokemonCard pokemon={query.data} />
+                <PokemonRow pokemon={query.data} />
                 
                 <Box sx={{ mt: 4, textAlign: 'center' }}>
                   <Typography variant="body2" color="text.secondary" gutterBottom>
