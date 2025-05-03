@@ -1,69 +1,56 @@
 import { createTheme } from '@mui/material/styles';
 
-export const theme = createTheme({
+// Create base theme
+const baseTheme = createTheme({
   palette: {
-    mode: 'dark',
     primary: {
       main: '#FF1B1B',
       light: '#FF5C5C',
       dark: '#E50000',
-    },
-    text: {
-      primary: '#FFFFFF',
-      secondary: 'rgba(255, 255, 255, 0.7)',
-    },
-    background: {
-      default: '#121212',
-      paper: '#1E1E1E',
-    },
+    }
+  }
+});
+
+// Create dark theme components
+const darkThemeComponents = {
+  MuiPaper: {
+    styleOverrides: {
+      root: {
+        backgroundImage: 'none',
+        backgroundColor: '#1E1E1E',
+      }
+    }
   },
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      color: '#FFFFFF',
-    },
-    h2: {
-      color: '#FFFFFF',
-    },
-    h3: {
-      color: '#FFFFFF',
-    },
-    h4: {
-      color: '#FFFFFF',
-    },
-    h5: {
-      color: '#FFFFFF',
-    },
-    h6: {
-      color: '#FFFFFF',
-    },
-    subtitle1: {
-      color: '#FFFFFF',
-    },
-    subtitle2: {
-      color: '#FFFFFF',
-    },
-    body1: {
-      color: 'rgba(255, 255, 255, 0.9)',
-    },
-    body2: {
-      color: 'rgba(255, 255, 255, 0.7)',
-    },
+  MuiCard: {
+    styleOverrides: {
+      root: {
+        backgroundImage: 'none',
+        backgroundColor: '#1E1E1E',
+      }
+    }
+  }
+};
+
+// Create the theme with dark mode overrides
+export const theme = createTheme({
+  ...baseTheme,
+  palette: {
+    ...baseTheme.palette,
+    // Use system preference for mode
+    mode: 'light',
+    // Dark mode overrides
+    ...(typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches && {
+      text: {
+        primary: '#FFFFFF',
+        secondary: 'rgba(255, 255, 255, 0.7)',
+      },
+      background: {
+        default: '#121212',
+        paper: '#1E1E1E',
+      }
+    })
   },
   components: {
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundImage: 'none',
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          backgroundImage: 'none',
-        },
-      },
-    },
-  },
+    ...(typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches && darkThemeComponents)
+  }
 }); 
