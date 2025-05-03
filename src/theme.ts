@@ -1,56 +1,48 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, alpha } from '@mui/material/styles';
 
-// Create base theme
-const baseTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#FF1B1B',
-      light: '#FF5C5C',
-      dark: '#E50000',
-    }
-  }
-});
-
-// Create dark theme components
-const darkThemeComponents = {
-  MuiPaper: {
-    styleOverrides: {
-      root: {
-        backgroundImage: 'none',
-        backgroundColor: '#1E1E1E',
-      }
-    }
-  },
-  MuiCard: {
-    styleOverrides: {
-      root: {
-        backgroundImage: 'none',
-        backgroundColor: '#1E1E1E',
-      }
-    }
-  }
-};
-
-// Create the theme with dark mode overrides
-export const theme = createTheme({
-  ...baseTheme,
-  palette: {
-    ...baseTheme.palette,
-    // Use system preference for mode
-    mode: 'light',
-    // Dark mode overrides
-    ...(typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches && {
-      text: {
-        primary: '#FFFFFF',
-        secondary: 'rgba(255, 255, 255, 0.7)',
+// Create a theme instance with proper light/dark mode support
+export const createAppTheme = (mode: 'light' | 'dark') => {
+  const baseTheme = createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: '#FF1B1B',
+        light: '#FF5C5C',
+        dark: '#E50000',
       },
       background: {
-        default: '#121212',
-        paper: '#1E1E1E',
+        default: mode === 'light' ? '#ffffff' : '#121212',
+        paper: mode === 'light' ? '#ffffff' : '#1E1E1E',
+      },
+      text: {
+        primary: mode === 'light' ? '#171717' : '#ffffff',
+        secondary: mode === 'light' ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.7)',
+      },
+    },
+    components: {
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            backgroundImage: 'none',
+          }
+        }
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            backgroundImage: 'none',
+          }
+        }
+      },
+      MuiAppBar: {
+        styleOverrides: {
+          root: {
+            backgroundImage: 'none',
+          }
+        }
       }
-    })
-  },
-  components: {
-    ...(typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches && darkThemeComponents)
-  }
-}); 
+    }
+  });
+
+  return baseTheme;
+}; 

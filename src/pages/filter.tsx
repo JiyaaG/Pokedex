@@ -158,6 +158,7 @@ export default function TypeFilter() {
             options={allTypes}
             selectedType={type}
             onSelect={setType}
+            isLoading={query.isLoading}
           />
         </Box>
 
@@ -230,16 +231,26 @@ export default function TypeFilter() {
           )}
 
           {/* Empty State */}
-          {!query.isLoading && type && query.data && query.data.length === 0 && (
+          {!query.isLoading && type && query.error && (
             <Alert 
-              severity="info" 
+              severity="error"
               variant="filled"
               sx={{ 
                 borderRadius: 2,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                '& .MuiAlert-message': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                }
               }}
             >
-              No Pokémon found for the {type} type.
+              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                {query.error.message}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                Tip: Try selecting a different type or check the spelling
+              </Typography>
             </Alert>
           )}
 
@@ -325,6 +336,30 @@ export default function TypeFilter() {
                 )}
               </Box>
             </Fade>
+          )}
+
+          {/* Empty State */}
+          {!query.isLoading && type && query.data && query.data.length === 0 && (
+            <Alert 
+              severity="info" 
+              variant="filled"
+              sx={{ 
+                borderRadius: 2,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                '& .MuiAlert-message': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                }
+              }}
+            >
+              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                No Pokémon found for the {type} type.
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                Try selecting a different type or check the spelling
+              </Typography>
+            </Alert>
           )}
         </Box>
       </Container>

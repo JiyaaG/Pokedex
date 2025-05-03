@@ -38,7 +38,6 @@ export default function MultipleLookup() {
   const [hasSearched, setHasSearched] = React.useState(false);
   const parsed = names ? names.split(',').map((n) => n.trim()) : [];
 
-  // Explicitly typing the query to expect an array of Pokemon
   const query = api.pokemon.getPokemonArray.useQuery(parsed, {
     enabled: parsed.length > 0,
   });
@@ -124,6 +123,7 @@ export default function MultipleLookup() {
           placeholder="Enter Pokémon names (comma separated)"
           buttonText="Search"
           onSearch={handleSearch}
+          isLoading={query.isLoading}
         />
 
         {/* Search Terms Display */}
@@ -215,6 +215,29 @@ export default function MultipleLookup() {
             </Fade>
           )}
 
+          {hasSearched && !query.isLoading && query.error && (
+            <Alert 
+              severity="error"
+              variant="filled"
+              sx={{ 
+                borderRadius: 2,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                '& .MuiAlert-message': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                }
+              }}
+            >
+              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                {query.error.message}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                Tip: Try searching for Pokémon like "Pikachu, Charizard, Bulbasaur"
+              </Typography>
+            </Alert>
+          )}
+
           {hasSearched && !query.isLoading && query.data && query.data.length === 0 && (
             <Alert 
               severity="info" 
@@ -222,9 +245,19 @@ export default function MultipleLookup() {
               sx={{ 
                 borderRadius: 2,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                '& .MuiAlert-message': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                }
               }}
             >
-              No Pokémon found with the provided names. Please check the spelling and try again.
+              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                No Pokémon found with the provided names.
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                Please check the spelling and try again. Example: "Pikachu, Charizard, Bulbasaur"
+              </Typography>
             </Alert>
           )}
 

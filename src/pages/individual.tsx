@@ -109,6 +109,7 @@ export default function IndividualLookup() {
           placeholder="Enter Pokémon name (e.g. Bulbasaur)"
           buttonText="Search"
           onSearch={handleSearch}
+          isLoading={query.isLoading}
         />
 
         {/* Results Area */}
@@ -179,9 +180,19 @@ export default function IndividualLookup() {
               sx={{ 
                 borderRadius: 2,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                '& .MuiAlert-message': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                }
               }}
             >
-              No Pokémon found with name &quot;{name}&quot;. Please check the spelling and try again.
+              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                {query.error?.message || `No Pokémon found with name "${name}". Please check the spelling and try again.`}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                Tip: Try searching for Pokémon like "Pikachu", "Charizard", or "Bulbasaur"
+              </Typography>
             </Alert>
           )}
 

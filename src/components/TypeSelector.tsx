@@ -1,5 +1,11 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { 
+  Box, 
+  Button, 
+  Typography, 
+  CircularProgress,
+  alpha 
+} from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -7,6 +13,7 @@ type Props = {
   options: string[];                 
   selectedType: string | undefined;
   onSelect: (type: string | undefined) => void;
+  isLoading?: boolean;
 };
 
 // Type to color mapping for Pokémon types
@@ -33,7 +40,7 @@ const typeColors: Record<string, string> = {
   default: '#777777'
 };
 
-export function TypeSelector({ options, selectedType, onSelect }: Props) {
+export function TypeSelector({ options, selectedType, onSelect, isLoading = false }: Props) {
   return (
     <Box sx={{ mb: 3 }}>
       <Box sx={{ 
@@ -45,12 +52,20 @@ export function TypeSelector({ options, selectedType, onSelect }: Props) {
         <Typography variant="subtitle1" fontWeight="medium">
           Filter by Type
         </Typography>
+        {isLoading && (
+          <CircularProgress 
+            size={20} 
+            sx={{ ml: 2 }}
+          />
+        )}
       </Box>
 
       <Box sx={{ 
         display: 'flex', 
         flexWrap: 'wrap',
         gap: 1,
+        opacity: isLoading ? 0.7 : 1,
+        transition: 'opacity 0.2s'
       }}>
         {options.map((type) => {
           const typeColor = typeColors[type.toLowerCase()] || typeColors.default;
@@ -60,6 +75,7 @@ export function TypeSelector({ options, selectedType, onSelect }: Props) {
             <Button
               key={type}
               onClick={() => onSelect(type)}
+              disabled={isLoading}
               sx={{
                 textTransform: 'capitalize',
                 borderRadius: '16px',
@@ -67,7 +83,7 @@ export function TypeSelector({ options, selectedType, onSelect }: Props) {
                 py: 0.75,
                 backgroundColor: isSelected ? typeColor : 'transparent',
                 color: isSelected ? 'white' : typeColor,
-                border: `2px solid ${typeColor}`,
+                border: `2px solid ${isLoading ? alpha(typeColor, 0.5) : typeColor}`,
                 fontWeight: 'bold',
                 '&:hover': {
                   backgroundColor: isSelected 
@@ -77,6 +93,15 @@ export function TypeSelector({ options, selectedType, onSelect }: Props) {
                   boxShadow: isSelected 
                     ? `0 4px 8px ${typeColor}80` 
                     : 'none',
+                },
+                '&:disabled': {
+                  backgroundColor: isSelected 
+                    ? alpha(typeColor, 0.7) 
+                    : 'transparent',
+                  color: isSelected 
+                    ? 'white' 
+                    : alpha(typeColor, 0.7),
+                  cursor: 'not-allowed',
                 },
                 transition: 'all 0.2s',
               }}
@@ -89,6 +114,7 @@ export function TypeSelector({ options, selectedType, onSelect }: Props) {
         <Button
           variant="outlined"
           onClick={() => onSelect(undefined)}
+          disabled={isLoading}
           startIcon={<ClearIcon />}
           sx={{
             borderRadius: '16px',
@@ -106,6 +132,13 @@ export function TypeSelector({ options, selectedType, onSelect }: Props) {
                 ? 'rgba(63,81,181,0.2)' 
                 : 'rgba(0,0,0,0.04)',
               transform: selectedType == null ? 'translateY(-2px)' : 'none',
+            },
+            '&:disabled': {
+              backgroundColor: selectedType == null 
+                ? alpha('#3f51b5', 0.1) 
+                : 'transparent',
+              opacity: 0.7,
+              cursor: 'not-allowed',
             },
             transition: 'all 0.2s',
           }}
