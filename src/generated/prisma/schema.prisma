@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Pokemon {
+  id     Int           @id @default(autoincrement())
+  name   String
+  sprite String
+  types  PokemonType[]
+}
+
+model Type {
+  id       Int           @id @default(autoincrement())
+  name     String        @unique
+  pokemons PokemonType[]
+}
+
+model PokemonType {
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+  type      Type    @relation(fields: [typeId], references: [id])
+  typeId    Int
+
+  @@id([pokemonId, typeId])
+}
