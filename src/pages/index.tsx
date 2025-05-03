@@ -14,11 +14,15 @@ import {
   useTheme,
   alpha,
   Paper,
+  IconButton,
 } from '@mui/material';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import SearchIcon from '@mui/icons-material/Search';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useThemeContext } from './_app';
 
 // Card data with icons
 const cardData = [
@@ -47,6 +51,7 @@ const cardData = [
 
 export default function Home() {
   const theme = useTheme();
+  const { isDarkMode, toggleTheme } = useThemeContext();
 
   return (
     <>
@@ -126,6 +131,13 @@ export default function Home() {
             >
               Browse Types
             </Button>
+            <IconButton
+              onClick={toggleTheme}
+              color="inherit"
+              sx={{ ml: 1 }}
+            >
+              {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
