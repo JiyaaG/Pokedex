@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-// Create a theme instance with light mode
+// Create a simple light theme without system preference detection
 const theme = createTheme({
   palette: {
     mode: 'light',
@@ -23,7 +23,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          backgroundColor: '#ffffff',
         }
       }
     },
@@ -31,7 +30,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          backgroundColor: '#ffffff',
         }
       }
     },
