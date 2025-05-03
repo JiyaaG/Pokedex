@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: process.env.NODE_ENV === "development",
-  // Add any other necessary configuration here
+  reactStrictMode: true,
+  swcMinify: true,
+  output: 'standalone',
+  // Ensure images from the Pokemon API are allowed
+  images: {
+    domains: ['raw.githubusercontent.com'],
+  }
 };
 
-export default nextConfig; 
+module.exports = nextConfig; 

@@ -169,20 +169,26 @@ export default function Home() {
         {/* Navigation Cards */}
         <Grid container spacing={4} sx={{ mb: 6 }}>
           {cardData.map((card) => (
-               // @ts-expect-error: Grid item props are incorrectly inferred due to MUI types mismatch
-            <Grid item xs={12} sm={6} md={4} key={card.href}>
+            <Grid 
+              item 
+              xs={12} 
+              sm={6} 
+              md={4} 
+              key={card.href}
+              component="div"
+            >
               <Link href={card.href} passHref legacyBehavior>
-                <Card 
-                  component="a" 
-                  elevation={3} 
-                  sx={{ 
-                    textDecoration: 'none',
-                    borderRadius: 3,
+                <Card
+                  component="a"
+                  sx={{
                     height: '100%',
-                    transition: 'transform 0.3s, box-shadow 0.3s',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    textDecoration: 'none',
+                    transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
                     '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: `0 12px 20px -8px ${alpha(card.color, 0.5)}`,
+                      transform: 'translateY(-4px)',
+                      boxShadow: (theme) => `0 12px 24px ${alpha(theme.palette.primary.main, 0.2)}`,
                     },
                   }}
                 >

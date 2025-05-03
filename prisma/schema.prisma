@@ -6,12 +6,14 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 
@@ -20,12 +22,16 @@ model Pokemon {
   name    String  @unique
   sprite  String
   types   PokemonType[]
+
+  @@index([name])
 }
 
 model Type {
   id      Int     @id @default(autoincrement())
   name    String  @unique
   pokemons PokemonType[]
+
+  @@index([name])
 }
 
 model PokemonType {
@@ -35,5 +41,7 @@ model PokemonType {
   typeId    Int
 
   @@id([pokemonId, typeId])
+  @@index([pokemonId])
+  @@index([typeId])
 }
 
