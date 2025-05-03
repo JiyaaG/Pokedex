@@ -2,10 +2,14 @@ import React from 'react';
 import { api } from '../utils/trpc';
 import { TypeSelector } from '../components/TypeSelector';
 // import FilterablePokedexTable from '../components/filterablePokedexTable'; 
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+
+
 import {
   Container,
   Typography,
-  Box,
+  
   Paper,
   Alert,
   CircularProgress,
@@ -13,7 +17,7 @@ import {
   alpha,
   Breadcrumbs,
   Link as MuiLink,
-  Grid,
+  
   Pagination,
   Fade,
   Divider
@@ -283,7 +287,12 @@ export default function TypeFilter() {
                         animation: 'fadeIn 0.3s ease-in-out',
                         animationDelay: `${index * 100}ms`,
                       }}>
-                        <PokedexTable pokemon={[pokemon]} />
+                        <PokedexTable pokemon={[{ 
+                          id: pokemon.id!, 
+                          name: pokemon.name!, 
+                          sprite: pokemon.sprite!, 
+                          types: pokemon.types! 
+                        }]} />
                       </Box>
                     </Grid>
                   ))}
