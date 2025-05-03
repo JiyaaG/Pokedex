@@ -1,48 +1,48 @@
-import { createTheme, alpha } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
-// Create a theme instance with proper light/dark mode support
-export const createAppTheme = (mode: 'light' | 'dark') => {
-  const baseTheme = createTheme({
-    palette: {
-      mode,
-      primary: {
-        main: '#FF1B1B',
-        light: '#FF5C5C',
-        dark: '#E50000',
-      },
-      background: {
-        default: mode === 'light' ? '#ffffff' : '#121212',
-        paper: mode === 'light' ? '#ffffff' : '#1E1E1E',
-      },
-      text: {
-        primary: mode === 'light' ? '#171717' : '#ffffff',
-        secondary: mode === 'light' ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.7)',
-      },
+// Create a theme instance with light mode
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#FF1B1B',
+      light: '#FF5C5C',
+      dark: '#E50000',
     },
-    components: {
-      MuiPaper: {
-        styleOverrides: {
-          root: {
-            backgroundImage: 'none',
-          }
+    background: {
+      default: '#ffffff',
+      paper: '#ffffff',
+    },
+    text: {
+      primary: '#171717',
+      secondary: 'rgba(0, 0, 0, 0.7)',
+    },
+  },
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+          backgroundColor: '#ffffff',
         }
-      },
-      MuiCard: {
-        styleOverrides: {
-          root: {
-            backgroundImage: 'none',
-          }
+      }
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+          backgroundColor: '#ffffff',
         }
-      },
-      MuiAppBar: {
-        styleOverrides: {
-          root: {
-            backgroundImage: 'none',
-          }
+      }
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
         }
       }
     }
-  });
+  }
+});
 
-  return baseTheme;
-}; 
+export default theme; 
