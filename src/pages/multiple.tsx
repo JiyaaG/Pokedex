@@ -1,7 +1,7 @@
 import React from 'react';
 import { api } from '../utils/trpc';
 import { SearchForm } from '../components/SearchForm';
-import PokemonRow from '../components/PokemonRow';
+import PokedexTable from '../components/PokedexTable'; 
 import {
   Container,
   Typography,
@@ -9,30 +9,41 @@ import {
   Paper,
   Alert,
   CircularProgress,
+  Chip,
   useTheme,
   alpha,
   Breadcrumbs,
   Link as MuiLink,
   Button,
-  Fade
+  Fade,
+  Divider
 } from '@mui/material';
 import Link from 'next/link';
 import Head from 'next/head';
 import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
+
+// Assuming Pokemon type definition exists
+type Pokemon = {
+  id: number;
+  name: string;
+  sprite: string;
+  types: string[];
+};
 
 export default function MultipleLookup() {
   const theme = useTheme();
-  const [names, setNames] = React.useState<string[]>([]);
+  const [names, setNames] = React.useState<string | null>(null);
   const [hasSearched, setHasSearched] = React.useState(false);
-  const query = api.pokemon.getPokemonArray.useQuery(names, {
-    enabled: names.length > 0,
-    retry: false, // Don't retry failed queries
+  const parsed = names ? names.split(',').map((n) => n.trim()) : [];
+
+  const query = api.pokemon.getPokemonArray.useQuery(parsed, {
+    enabled: parsed.length > 0,
   });
 
   const handleSearch = (value: string) => {
-    setNames(value.split(',').map(name => name.trim()));
+    setNames(value);
     setHasSearched(true);
   };
 
@@ -42,7 +53,7 @@ export default function MultipleLookup() {
         <title>Pokédex - Multiple Lookup</title>
         <meta
           name="description"
-          content="Search for multiple Pokémon at once"
+          content="Search for multiple Pokémon by name"
         />
       </Head>
 
@@ -70,7 +81,7 @@ export default function MultipleLookup() {
               fontWeight: 'medium',
             }}
           >
-            <SearchIcon sx={{ mr: 0.5, fontSize: 20 }} />
+            <FormatListBulletedIcon sx={{ mr: 0.5, fontSize: 20 }} />
             Multiple Lookup
           </Typography>
         </Breadcrumbs>
@@ -82,8 +93,8 @@ export default function MultipleLookup() {
             borderRadius: 3,
             p: 3,
             mb: 4,
-            background: `linear-gradient(to right, ${alpha('#EE8130', 0.1)}, ${alpha('#EE8130', 0.05)})`,
-            border: `1px solid ${alpha('#EE8130', 0.2)}`,
+            background: `linear-gradient(to right, ${alpha('#6390F0', 0.1)}, ${alpha('#6390F0', 0.05)})`,
+            border: `1px solid ${alpha('#6390F0', 0.2)}`,
           }}
         >
           <Typography 
@@ -93,30 +104,58 @@ export default function MultipleLookup() {
               fontWeight: 'bold',
               display: 'flex',
               alignItems: 'center',
-              color: '#EE8130',
+              color: '#6390F0',
             }}
           >
             <CatchingPokemonIcon sx={{ mr: 1.5, fontSize: 32 }} />
-            Find Multiple Pokémon
+            Compare Multiple Pokémon
           </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Enter multiple Pokémon names separated by commas to see their details. Try names like &quot;Pikachu, Charizard, Eevee&quot;
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Enter multiple Pokémon names separated by commas to view their details side by side.
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Example: &quot;pikachu, charizard, bulbasaur&quot;
           </Typography>
         </Paper>
 
         {/* Search Form */}
         <SearchForm
-          placeholder="Enter Pokémon names (e.g. Bulbasaur, Charmander, Squirtle)"
+          placeholder="Enter Pokémon names (comma separated)"
           buttonText="Search"
           onSearch={handleSearch}
           isLoading={query.isLoading}
         />
+
+        {/* Search Terms Display */}
+        {parsed.length > 0 && (
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              Searching for:
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {parsed.map((term, index) => (
+                <Chip 
+                  key={index} 
+                  label={term} 
+                  size="medium"
+                  sx={{ 
+                    textTransform: 'capitalize',
+                    backgroundColor: alpha('#6390F0', 0.1),
+                    border: `1px solid ${alpha('#6390F0', 0.3)}`,
+                    fontWeight: 'medium',
+                  }}
+                />
+              ))}
+            </Box>
+          </Box>
+        )}
 
         {/* Results Area */}
         <Box sx={{ minHeight: 300 }}>
           {query.isLoading && (
             <Box sx={{ 
               display: 'flex', 
+              flexDirection: 'column',
               justifyContent: 'center', 
               alignItems: 'center',
               py: 8
@@ -124,59 +163,59 @@ export default function MultipleLookup() {
               <CircularProgress 
                 size={60} 
                 thickness={4} 
-                sx={{ color: '#EE8130' }} 
+                sx={{ color: '#6390F0', mb: 3 }} 
               />
+              <Typography variant="body2" color="text.secondary">
+                Catching Pokémon... Please wait!
+              </Typography>
             </Box>
           )}
 
           {!query.isLoading && query.data && query.data.length > 0 && (
-            <Fade in={true} timeout={800}>
+            <Fade in={true} timeout={500}>
               <Box>
-                {query.data.map((pokemon) => (
-                  <PokemonRow 
-                    key={pokemon.id} 
-                    pokemon={{
-                      id: pokemon.id ?? 0,
-                      name: pokemon.name ?? 'Unknown',
-                      sprite: pokemon.sprite ?? '',
-                      types: pokemon.types ?? [],
-                    }} 
-                  />
-                ))}
+                <Box sx={{ mb: 4 }}>
+                  <Typography variant="h6" gutterBottom>
+                    Results ({query.data.length} Pokémon found)
+                  </Typography>
+                  <Divider sx={{ mb: 3 }} />
+                  
+                  <PokedexTable pokemon={query.data as Pokemon[]} />
+                </Box>
                 
                 <Box sx={{ mt: 4, textAlign: 'center' }}>
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    Want to explore more Pokémon?
-                  </Typography>
                   <Button 
                     variant="outlined" 
                     component={Link} 
-                    href="/individual"
+                    href="/filter"
                     sx={{ 
                       mr: 2,
                       borderRadius: 2,
                       textTransform: 'none',
                     }}
                   >
-                    Individual Lookup
+                    Browse by Type
                   </Button>
                   <Button 
-                    variant="outlined" 
-                    component={Link} 
-                    href="/filter"
+                    variant="contained" 
+                    onClick={() => {
+                      setNames('');
+                      setHasSearched(false);
+                    }}
                     sx={{ 
                       borderRadius: 2,
                       textTransform: 'none',
+                      background: 'linear-gradient(45deg, #6390F0 30%, #96BAFF 90%)',
                     }}
                   >
-                    Browse by Type
+                    New Search
                   </Button>
                 </Box>
               </Box>
             </Fade>
           )}
 
-          {hasSearched && !query.isLoading && (query.error || !query.data || query.data.length === 0) && (
+          {hasSearched && !query.isLoading && query.error && (
             <Alert 
               severity="error"
               variant="filled"
@@ -191,10 +230,33 @@ export default function MultipleLookup() {
               }}
             >
               <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-                {query.error?.message || `No Pokémon found with the given names. Please check the spelling and try again.`}
+                {query.error.message}
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                Tip: Try searching for Pokémon like "Pikachu, Charizard, Eevee"
+                Tip: Try searching for Pokémon like "Pikachu, Charizard, Bulbasaur"
+              </Typography>
+            </Alert>
+          )}
+
+          {hasSearched && !query.isLoading && query.data && query.data.length === 0 && (
+            <Alert 
+              severity="info" 
+              variant="filled"
+              sx={{ 
+                borderRadius: 2,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                '& .MuiAlert-message': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                }
+              }}
+            >
+              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                No Pokémon found with the provided names.
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                Please check the spelling and try again. Example: "Pikachu, Charizard, Bulbasaur"
               </Typography>
             </Alert>
           )}
@@ -210,15 +272,15 @@ export default function MultipleLookup() {
                 opacity: 0.7,
               }}
             >
-              <CatchingPokemonIcon 
+              <FormatListBulletedIcon 
                 sx={{ 
                   fontSize: 60, 
                   mb: 2,
                   color: alpha(theme.palette.text.secondary, 0.5),
                 }} 
               />
-              <Typography variant="body1" color="text.secondary">
-                Enter Pokémon names above to begin your search
+              <Typography variant="body1" color="text.secondary" align="center">
+                Enter multiple Pokémon names separated by commas above
               </Typography>
             </Box>
           )}
