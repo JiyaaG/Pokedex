@@ -1,235 +1,141 @@
-import Head from 'next/head';
-import Link from 'next/link';
+import React from 'react';
 import {
   Container,
+  Typography,
   Grid,
   Card,
-  CardActionArea,
   CardContent,
-  Typography,
+  CardActionArea,
   Box,
-  AppBar,
-  Toolbar,
-  Button,
   useTheme,
   alpha,
   Paper,
-  IconButton,
 } from '@mui/material';
-import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
+import Link from 'next/link';
+import Head from 'next/head';
 import SearchIcon from '@mui/icons-material/Search';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useThemeContext } from './_app';
+import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
 // Card data with icons
 const cardData = [
   {
     title: 'Individual Lookup',
-    description: 'Search for a single Pokémon by name.',
+    description: 'Search for a specific Pokémon by name',
+    icon: <SearchIcon sx={{ fontSize: 40 }} />,
     href: '/individual',
-    icon: <SearchIcon fontSize="large" />,
-    color: '#EE8130', // Fire type color
+    color: '#EE8130',
   },
   {
     title: 'Multiple Lookup',
-    description: 'Search for multiple Pokémon (comma-separated).',
+    description: 'Compare multiple Pokémon side by side',
+    icon: <FormatListBulletedIcon sx={{ fontSize: 40 }} />,
     href: '/multiple',
-    icon: <FormatListBulletedIcon fontSize="large" />,
-    color: '#6390F0', // Water type color
+    color: '#6390F0',
   },
   {
     title: 'Type Filter',
-    description: 'Browse all Pokémon of a selected type.',
+    description: 'Browse Pokémon by their type',
+    icon: <FilterAltIcon sx={{ fontSize: 40 }} />,
     href: '/filter',
-    icon: <FilterAltIcon fontSize="large" />,
-    color: '#7AC74C', // Grass type color
+    color: '#7AC74C',
   },
 ];
 
 export default function Home() {
   const theme = useTheme();
-  const { isDarkMode, toggleTheme } = useThemeContext();
 
   return (
     <>
       <Head>
-        <title>Pokédex Home</title>
+        <title>Pokédex - Home</title>
         <meta
           name="description"
-          content="Navigate to individual, multiple, or type-filtered lookup"
+          content="A comprehensive Pokédex application"
         />
       </Head>
 
-      {/* Navbar */}
-      <AppBar 
-        position="static" 
-        elevation={0}
-        sx={{ 
-          background: 'linear-gradient(90deg, #FF1B1B 30%, #CC0000 90%)',
-          mb: 4,
-        }}
-      >
-        <Toolbar>
-          <Box 
-            display="flex" 
-            alignItems="center" 
-            flexGrow={1}
-            component={Link}
-            href="/"
-            sx={{ textDecoration: 'none', color: 'white' }}
-          >
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        {/* Header Section */}
+        <Paper
+          elevation={0}
+          sx={{
+            borderRadius: 3,
+            p: 4,
+            mb: 6,
+            background: `linear-gradient(45deg, ${alpha('#FF1B1B', 0.1)}, ${alpha('#FF1B1B', 0.05)})`,
+            border: `1px solid ${alpha('#FF1B1B', 0.2)}`,
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
             <CatchingPokemonIcon 
               sx={{ 
-                fontSize: 36, 
+                fontSize: 48, 
                 mr: 2,
-                filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
-                animation: 'spin 10s linear infinite',
-                '@keyframes spin': {
-                  '0%': { transform: 'rotate(0deg)' },
-                  '100%': { transform: 'rotate(360deg)' },
-                },
+                color: '#FF1B1B',
               }} 
             />
             <Typography 
-              variant="h4" 
-              component="div" 
+              variant="h3" 
+              component="h1"
               sx={{ 
                 fontWeight: 'bold',
-                letterSpacing: '0.5px',
-                textShadow: '2px 2px 3px rgba(0,0,0,0.2)',
+                color: '#FF1B1B',
               }}
             >
               Pokédex
             </Typography>
           </Box>
-          
-          <Box>
-            <Button 
-              color="inherit" 
-              component={Link}
-              href="/individual"
-              sx={{ 
-                ml: 1,
-                fontWeight: 'bold',
-                '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }
-              }}
-            >
-              Search
-            </Button>
-            <Button 
-              color="inherit"
-              component={Link}
-              href="/filter"
-              sx={{ 
-                ml: 1,
-                fontWeight: 'bold',
-                '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }
-              }}
-            >
-              Browse Types
-            </Button>
-            <IconButton
-              onClick={toggleTheme}
-              color="inherit"
-              sx={{ ml: 1 }}
-            >
-              {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-
-      <Container maxWidth="md">
-        {/* Hero Section */}
-        <Paper 
-          elevation={0}
-          sx={{
-            borderRadius: 4,
-            p: 5,
-            mb: 6,
-            background: `linear-gradient(to right, ${alpha(theme.palette.primary.main, 0.05)}, ${alpha(theme.palette.primary.main, 0.1)})`,
-            border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-            textAlign: 'center',
-          }}
-        >
-          <Typography 
-            variant="h2" 
-            gutterBottom
-            sx={{
-              fontWeight: 800,
-              background: 'linear-gradient(45deg, #FF1B1B 30%, #FF5C5C 90%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              mb: 2,
-            }}
-          >
-            Pokémon Explorer
-          </Typography>
-          
-          <Typography 
-            variant="h6" 
-            color="text.secondary"
-            sx={{ maxWidth: '80%', mx: 'auto', mb: 3 }}
-          >
-            Your ultimate guide to discover and learn about all Pokémon. Browse by name or type and collect information about your favorites!
+          <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600 }}>
+            Welcome to your comprehensive Pokémon database. Search, compare, and discover Pokémon with our easy-to-use tools.
           </Typography>
         </Paper>
 
-        {/* Navigation Cards */}
-        <Grid container spacing={4} sx={{ mb: 6 }}>
-          {cardData.map((card) => (
-            <Grid 
-              item 
-              xs={12} 
-              sm={6} 
-              md={4} 
-              key={card.href}
-              component="div"
-            >
-              <Link href={card.href} passHref legacyBehavior>
-                <Card
-                  component="a"
-                  sx={{
+        {/* Feature Cards */}
+        <Grid container spacing={4}>
+          {cardData.map((card, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Link href={card.href} passHref style={{ textDecoration: 'none' }}>
+                <Card 
+                  sx={{ 
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    textDecoration: 'none',
+                    borderRadius: 3,
                     transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
                     '&:hover': {
                       transform: 'translateY(-4px)',
-                      boxShadow: (theme) => `0 12px 24px ${alpha(theme.palette.primary.main, 0.2)}`,
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
                     },
                   }}
                 >
-                  <CardActionArea sx={{ height: '100%' }}>
-                    <CardContent sx={{ 
-                      p: 3,
-                      height: '100%',
+                  <CardActionArea 
+                    sx={{ 
+                      flexGrow: 1,
                       display: 'flex',
                       flexDirection: 'column',
-                      alignItems: 'center',
-                      textAlign: 'center',
-                    }}>
+                      alignItems: 'stretch',
+                      p: 2,
+                    }}
+                  >
+                    <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
                       <Box 
                         sx={{ 
                           mb: 2,
-                          p: 2,
-                          borderRadius: '50%',
-                          backgroundColor: alpha(card.color, 0.1),
-                          color: card.color,
                           display: 'flex',
                           justifyContent: 'center',
-                          alignItems: 'center',
+                          '& > *': { 
+                            color: card.color,
+                          }
                         }}
                       >
                         {card.icon}
                       </Box>
                       <Typography 
+                        gutterBottom 
                         variant="h5" 
-                        gutterBottom
+                        component="h2"
                         sx={{ 
                           fontWeight: 'bold',
                           color: card.color,
@@ -247,19 +153,6 @@ export default function Home() {
             </Grid>
           ))}
         </Grid>
-        
-        {/* Footer */}
-        <Box 
-          sx={{ 
-            textAlign: 'center', 
-            py: 4,
-            borderTop: `1px solid ${alpha(theme.palette.divider, 0.5)}`,
-          }}
-        >
-          <Typography variant="body2" color="text.secondary">
-            Pokédex Explorer © {new Date().getFullYear()}
-          </Typography>
-        </Box>
       </Container>
     </>
   );
