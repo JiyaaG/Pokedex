@@ -1,7 +1,7 @@
 import React from 'react';
 import { api } from '../utils/trpc';
 import { SearchForm } from '../components/SearchForm';
-import  PokemonRow  from '../components/PokemonRow';
+import PokemonRow from '../components/PokemonRow';
 import {
   Container,
   Typography,
