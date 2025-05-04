@@ -10,6 +10,9 @@ import {
   useTheme,
   alpha,
   Paper,
+  AppBar,
+  Toolbar,
+  Button,
 } from '@mui/material';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -55,6 +58,78 @@ export default function Home() {
           content="A comprehensive Pokédex application"
         />
       </Head>
+
+      {/* Navbar */}
+      <AppBar 
+        position="static" 
+        elevation={0}
+        sx={{
+          background: 'linear-gradient(90deg, #FF1B1B 30%, #CC0000 90%)',
+          mb: 4,
+        }}
+      >
+        <Toolbar>
+          <Box 
+            display="flex" 
+            alignItems="center" 
+            flexGrow={1}
+            component={Link}
+            href="/"
+            sx={{ textDecoration: 'none', color: 'white' }}
+          >
+            <CatchingPokemonIcon 
+              sx={{ 
+                fontSize: 36, 
+                mr: 2,
+                filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
+                animation: 'spin 10s linear infinite',
+                '@keyframes spin': {
+                  '0%': { transform: 'rotate(0deg)' },
+                  '100%': { transform: 'rotate(360deg)' },
+                },
+              }} 
+            />
+            <Typography 
+              variant="h4" 
+              component="div" 
+              sx={{ 
+                fontWeight: 'bold',
+                letterSpacing: '0.5px',
+                textShadow: '2px 2px 3px rgba(0,0,0,0.2)',
+              }}
+            >
+              Pokédex
+            </Typography>
+          </Box>
+          
+          <Box>
+            <Button 
+              color="inherit" 
+              component={Link}
+              href="/individual"
+              sx={{ 
+                ml: 1,
+                fontWeight: 'bold',
+                '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }
+              }}
+            >
+              Search
+            </Button>
+            <Button 
+              color="inherit"
+              component={Link}
+              href="/filter"
+              sx={{ 
+                ml: 1,
+                fontWeight: 'bold',
+                '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }
+              }}
+            >
+              Browse Types
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
         {/* Header Section */}
