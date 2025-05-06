@@ -86,7 +86,7 @@ export default function IndividualLookup() {
           }}
         >
           <Typography 
-            variant="h4" 
+            variant="h6" 
             gutterBottom
             sx={{
               fontWeight: 'bold',

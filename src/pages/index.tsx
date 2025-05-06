@@ -101,32 +101,7 @@ export default function Home() {
             </Typography>
           </Box>
           
-          <Box>
-            <Button 
-              color="inherit" 
-              component={Link}
-              href="/individual"
-              sx={{ 
-                ml: 1,
-                fontWeight: 'bold',
-                '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }
-              }}
-            >
-              Search
-            </Button>
-            <Button 
-              color="inherit"
-              component={Link}
-              href="/filter"
-              sx={{ 
-                ml: 1,
-                fontWeight: 'bold',
-                '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }
-              }}
-            >
-              Browse Types
-            </Button>
-          </Box>
+          
         </Toolbar>
       </AppBar>
 
@@ -144,7 +119,7 @@ export default function Home() {
           }}
         >
           <Typography 
-            variant="h2" 
+            variant="h4" 
             gutterBottom
             sx={{
               fontWeight: 800,

@@ -99,7 +99,7 @@ export default function MultipleLookup() {
           }}
         >
           <Typography 
-            variant="h4" 
+            variant="h6" 
             gutterBottom
             sx={{
               fontWeight: 'bold',

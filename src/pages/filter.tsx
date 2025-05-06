@@ -135,7 +135,7 @@ export default function TypeFilter() {
           }}
         >
           <Typography 
-            variant="h4" 
+            variant="h6" 
             gutterBottom
             sx={{
               fontWeight: 'bold',
