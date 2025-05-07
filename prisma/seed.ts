@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
 const prisma = new PrismaClient();
 
@@ -17,6 +17,11 @@ type PokemonAPIResponse = {
 
 async function main() {
   try {
+    // Clear existing data to avoid unique constraint errors
+    await prisma.pokemonType.deleteMany({});
+    await prisma.type.deleteMany({});
+    await prisma.pokemon.deleteMany({});
+
     const pokemonNames = [
       "bulbasaur", "ivysaur", "venusaur",
       "charmander", "charmeleon", "charizard",

@@ -64,7 +64,7 @@ export default function TypeFilter() {
   const theme = useTheme();
   const [type, setType] = React.useState<string | undefined>(undefined);
   const [page, setPage] = React.useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 20;
   
   // Get the color for the selected type
   const typeColor = type ? typeColors[type.toLowerCase()] || typeColors.default : theme.palette.primary.main;
